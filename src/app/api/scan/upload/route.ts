@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSessionUser } from '@/lib/auth/session';
 import { checkUsage, recordUsage } from '@/lib/auth/usage';
 import { uploadCardImage, deleteCardImage, moveToUnknown } from '@/lib/storage/upload';
-import { analyzeCardImage } from '@/lib/claude/scanner';
 import { lookupPricingWaterfall } from '@/lib/pricing';
 import { buildAuctionListing, buildBuyItNowListing } from '@/lib/ebay/templates';
 import { createServerClient } from '@/lib/supabase/server';
