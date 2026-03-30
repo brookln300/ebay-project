@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   basePath: '/ebay',
+  env: {
+    NEXT_PUBLIC_BASE_PATH: '/ebay',
+  },
   async headers() {
     return [
       {

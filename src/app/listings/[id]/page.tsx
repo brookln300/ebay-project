@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { api } from '@/lib/utils/api';
 
 export default function ListingDetailPage() {
   const params = useParams();
@@ -19,7 +20,7 @@ export default function ListingDetailPage() {
   }, [params.id]);
 
   async function loadListing() {
-    const res = await fetch(`/api/listings/${params.id}`);
+    const res = await fetch(api(`/api/listings/${params.id}`));
     const data = await res.json();
     if (data.listing) {
       setListing(data.listing);
@@ -39,7 +40,7 @@ export default function ListingDetailPage() {
       updates.buy_it_now_price = parseFloat(price);
     }
 
-    await fetch(`/api/listings/${params.id}`, {
+    await fetch(api(`/api/listings/${params.id}`), {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates),
@@ -51,7 +52,7 @@ export default function ListingDetailPage() {
   async function publish() {
     if (!confirm('Publish this listing to eBay?')) return;
     setPublishing(true);
-    const res = await fetch(`/api/listings/${params.id}/publish`, { method: 'POST' });
+    const res = await fetch(api(`/api/listings/${params.id}/publish`), { method: 'POST' });
     const data = await res.json();
     if (data.ebay_item_id) {
       alert(`Published! eBay Item ID: ${data.ebay_item_id}`);
@@ -64,7 +65,7 @@ export default function ListingDetailPage() {
 
   async function deleteListing() {
     if (!confirm('Delete this listing?')) return;
-    await fetch(`/api/listings/${params.id}`, { method: 'DELETE' });
+    await fetch(api(`/api/listings/${params.id}`), { method: 'DELETE' });
     router.push('/listings');
   }
 

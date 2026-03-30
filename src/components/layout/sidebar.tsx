@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { api } from '@/lib/utils/api';
 
 const navItems = [
   { href: '/', label: 'Dashboard', icon: '📊' },
@@ -36,7 +37,7 @@ export default function Sidebar() {
 
   useEffect(() => {
     if (isAuthPage) return;
-    fetch('/api/auth/me')
+    fetch(api('/api/auth/me'))
       .then((r) => r.json())
       .then((data) => {
         if (data.user) {
@@ -52,7 +53,7 @@ export default function Sidebar() {
   if (isAuthPage) return null;
 
   async function logout() {
-    await fetch('/api/auth/logout', { method: 'POST' });
+    await fetch(api('/api/auth/logout'), { method: 'POST' });
     router.push('/login');
   }
 

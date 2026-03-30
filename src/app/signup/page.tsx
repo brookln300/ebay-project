@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { api } from '@/lib/utils/api';
 
 function generateChallenge() {
   const a = Math.floor(Math.random() * 10) + 1;
@@ -41,7 +42,7 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/signup', {
+      const res = await fetch(api('/api/auth/signup'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

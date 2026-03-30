@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { api } from '@/lib/utils/api';
 
 interface Card {
   id: string;
@@ -40,7 +41,7 @@ export default function CardsPage() {
     if (search) params.set('search', search);
     params.set('limit', '100');
 
-    const res = await fetch(`/api/cards?${params}`);
+    const res = await fetch(api(`/api/cards?${params}`));
     const data = await res.json();
     setCards(data.cards || []);
     setTotal(data.total || 0);

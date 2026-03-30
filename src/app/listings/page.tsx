@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { api } from '@/lib/utils/api';
 
 interface Listing {
   id: string;
@@ -35,7 +36,7 @@ export default function ListingsPage() {
     if (typeFilter) params.set('type', typeFilter);
     params.set('limit', '100');
 
-    const res = await fetch(`/api/listings?${params}`);
+    const res = await fetch(api(`/api/listings?${params}`));
     const data = await res.json();
     setListings(data.listings || []);
     setTotal(data.total || 0);
@@ -46,7 +47,7 @@ export default function ListingsPage() {
     if (!confirm('Publish this listing to eBay?')) return;
     setPublishing(id);
     try {
-      const res = await fetch(`/api/listings/${id}/publish`, { method: 'POST' });
+      const res = await fetch(api(`/api/listings/${id}/publish`), { method: 'POST' });
       const data = await res.json();
       if (data.ebay_item_id) {
         alert(`Published! eBay Item ID: ${data.ebay_item_id}`);
@@ -62,7 +63,7 @@ export default function ListingsPage() {
 
   async function deleteListing(id: string) {
     if (!confirm('Delete this draft listing?')) return;
-    await fetch(`/api/listings/${id}`, { method: 'DELETE' });
+    await fetch(api(`/api/listings/${id}`), { method: 'DELETE' });
     loadListings();
   }
 

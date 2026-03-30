@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { api } from '@/lib/utils/api';
 
 export default function CardDetailPage() {
   const params = useParams();
@@ -18,7 +19,7 @@ export default function CardDetailPage() {
   }, [params.id]);
 
   async function loadCard() {
-    const res = await fetch(`/api/cards/${params.id}`);
+    const res = await fetch(api(`/api/cards/${params.id}`));
     const data = await res.json();
     if (data.card) {
       setCard(data.card);
@@ -30,14 +31,14 @@ export default function CardDetailPage() {
 
   async function reanalyze() {
     setAnalyzing(true);
-    await fetch(`/api/cards/${params.id}/analyze`, { method: 'POST' });
+    await fetch(api(`/api/cards/${params.id}/analyze`), { method: 'POST' });
     await loadCard();
     setAnalyzing(false);
   }
 
   async function deleteCard() {
     if (!confirm('Delete this card and all its listings?')) return;
-    await fetch(`/api/cards/${params.id}`, { method: 'DELETE' });
+    await fetch(api(`/api/cards/${params.id}`), { method: 'DELETE' });
     router.push('/cards');
   }
 

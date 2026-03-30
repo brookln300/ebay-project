@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { api } from '@/lib/utils/api';
 
 const plans = [
   {
@@ -58,7 +59,7 @@ export default function PricingPage() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    fetch('/api/auth/me')
+    fetch(api('/api/auth/me'))
       .then((r) => r.json())
       .then((data) => {
         if (data.user) {
@@ -78,7 +79,7 @@ export default function PricingPage() {
 
     setLoading(tier);
     try {
-      const res = await fetch('/api/stripe/checkout', {
+      const res = await fetch(api('/api/stripe/checkout'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tier }),

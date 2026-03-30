@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { api } from '@/lib/utils/api';
 
 export default function SettingsPage() {
   const [watchDir, setWatchDir] = useState(
@@ -12,7 +13,7 @@ export default function SettingsPage() {
   async function connectEbay() {
     setConnecting(true);
     try {
-      const res = await fetch('/api/ebay/auth');
+      const res = await fetch(api('/api/ebay/auth'));
       const data = await res.json();
       if (data.auth_url) {
         window.location.href = data.auth_url;
