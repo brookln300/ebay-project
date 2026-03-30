@@ -6,7 +6,13 @@ import bcrypt from 'bcryptjs';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
-  const { email, password, display_name, antibot } = await req.json();
+  let body;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
+  }
+  const { email, password, display_name, antibot } = body;
 
   // Antibot: honeypot field must be empty, math challenge must be correct
   if (antibot?.honeypot) {
@@ -50,11 +56,17 @@ export async function POST(req: NextRequest) {
     .single();
 
   if (error || !user) {
+    console.error('[Signup] DB insert error:', error);
     return NextResponse.json({ error: 'Failed to create account' }, { status: 500 });
   }
 
   // Create session
-  await createSession(user.id);
+  try {
+    await createSession(user.id);
+  } catch (sessionErr) {
+    console.error('[Signup] Session creation error:', sessionErr);
+    return NextResponse.json({ error: 'Account created but session failed. Please log in.' }, { status: 500 });
+  }
 
   return NextResponse.json({ success: true, redirect: '/' });
 }
