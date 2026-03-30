@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { analyzeCardImage } from '../claude/scanner';
-import { lookupPricing } from '../ebay/pricing';
+import { lookupPricingWaterfall } from '../pricing';
 import { buildAuctionListing, buildBuyItNowListing } from '../ebay/templates';
 import { createServerClient } from '../supabase/server';
 import { isImageFile } from '../utils/image';
@@ -89,15 +89,17 @@ export async function scanDirectory(watchDir: string): Promise<ScanResult> {
         continue;
       }
 
-      // Step 3: Lookup pricing
+      // Step 3: Lookup pricing (waterfall: eBay → Zyla → SportsCardsPro → defaults)
       console.log(`[Scanner] Looking up pricing for: ${analysis.player_name}`);
-      const pricing = await lookupPricing(analysis);
+      const pricingResult = await lookupPricingWaterfall(analysis);
+      const pricing = pricingResult.data;
+      console.log(`[Scanner] Pricing source: ${pricingResult.source} (tried: ${pricingResult.sourcesAttempted.join(' → ')})`);
 
       // Save pricing history
       if (pricing.recent_sales.length > 0) {
         const pricingRows = pricing.recent_sales.map((sale) => ({
           card_id: card.id,
-          source: 'ebay_sold',
+          source: pricingResult.source,
           sale_price: sale.sale_price,
           sale_date: sale.sale_date,
           listing_title: sale.listing_title,

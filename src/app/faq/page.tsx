@@ -18,7 +18,7 @@ export default function FAQPage() {
     },
     {
       q: 'What are the tier limits?',
-      a: 'Free: 2 scans/day. Premium ($9.99/mo): 25 scans/day, 200/month. Pro ($29.99/mo): 100 scans/day, 1,000 listings/month. Each scan processes one card image.',
+      a: 'Free: 2 scans/day. Premium ($9.99/mo): 25 scans/day, 200/month. Pro ($49.99/mo): 100 scans/day, 1,000 listings/month. Each scan processes one card image.',
     },
     {
       q: 'Do I need an eBay developer account?',

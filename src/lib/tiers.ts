@@ -25,7 +25,7 @@ export const TIERS: Record<string, TierLimits> = {
     scans_per_day: 100,
     scans_per_month: 1000,
     listings_per_month: 1000,
-    price_monthly: 29.99,
+    price_monthly: 49.99,
     stripe_price_id: process.env.STRIPE_PRO_PRICE_ID || '',
   },
 };

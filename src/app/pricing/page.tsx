@@ -36,7 +36,7 @@ const plans = [
   {
     name: 'Pro',
     tier: 'pro',
-    price: '$29.99',
+    price: '$49.99',
     period: '/mo',
     features: [
       '100 scans per day',

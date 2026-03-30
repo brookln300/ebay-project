@@ -14,6 +14,7 @@ export interface CardAnalysis {
   confidence: number;
   suggested_title: string;
   notable_features: string[];
+  identification_notes: string;
 }
 
 export interface Card {
