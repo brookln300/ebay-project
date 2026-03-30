@@ -10,11 +10,6 @@ import type { Card } from '@/lib/types/card';
 
 export const dynamic = 'force-dynamic';
 
-// Increase body size limit for image uploads (10MB)
-export const config = {
-  api: { bodyParser: false },
-};
-
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
